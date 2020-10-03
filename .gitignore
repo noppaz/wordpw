@@ -1,0 +1,14 @@
+.bloop
+.metals
+project/.bloop
+project/metals.sbt
+
+project/project
+project/target
+target
+
+logs
+tmp
+dist
+.cache
+RUNNING_PID

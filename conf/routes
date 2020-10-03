@@ -1,0 +1,6 @@
+# Page routes
+GET     /                   controllers.HomeController.index()
+GET     /pw                 controllers.HomeController.pw(words: Int ?= 4, sep: String ?= ".", end: String ?= "_", numbers: Int ?= 2)
+
+# Assets
+GET     /assets/*file       controllers.Assets.versioned(path="/public", file: Asset)
