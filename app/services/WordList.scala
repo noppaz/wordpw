@@ -2,7 +2,7 @@ package services
 
 import javax.inject._
 import scala.io.Source
-import scala.util.Random
+import java.security.SecureRandom
 import scala.collection.mutable.ListBuffer
 
 trait Words {
@@ -16,9 +16,10 @@ trait Words {
 
 @Singleton
 class WordList extends Words {
-  private val bufferedSource = Source.fromFile("./public/files/wordlist.txt")
-  private val wordList = bufferedSource.getLines().toList
-  private val wordListLength = wordList.length
+  private[this] val bufferedSource =
+    Source.fromFile("./public/files/wordlist.txt")
+  private[this] val wordList = bufferedSource.getLines().toList
+  private[this] val wordListLength = wordList.length
   bufferedSource.close()
 
   def getWords(
@@ -32,7 +33,7 @@ class WordList extends Words {
 
     var randomWords = new ListBuffer[String]()
     (1 to numWords) foreach (_ => {
-      randomWords += wordList(Random.between(0, wordListLength))
+      randomWords += wordList(getRandomInt(wordListLength))
     })
 
     val wordLength = randomWords.mkString.length
@@ -46,5 +47,10 @@ class WordList extends Words {
       case None =>
         return randomWords.toList
     }
+  }
+
+  private[this] def getRandomInt(maxlen: Int): Int = {
+    val randomGen = SecureRandom.getInstance("SHA1PRNG", "SUN")
+    return randomGen.nextInt(maxlen)
   }
 }
