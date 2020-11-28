@@ -28,12 +28,11 @@ class WordList extends Words {
       min: Option[Int],
       tries: Int
   ): List[String] = {
-    var numWords = wordCount
-    if (tries % 10 == 0) numWords += 1
+    val numWords = if (tries % 10 != 0) { wordCount }
+    else { wordCount + 1 }
 
-    var randomWords = new ListBuffer[String]()
-    (1 to numWords) foreach (_ => {
-      randomWords += wordList(getRandomInt(wordListLength))
+    val randomWords = (1 to numWords).map(_ => {
+      wordList(getRandomInt(wordListLength))
     })
 
     val wordLength = randomWords.mkString.length
