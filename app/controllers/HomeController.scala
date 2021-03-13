@@ -26,9 +26,13 @@ class HomeController @Inject() (cc: ControllerComponents, words: Words)
       val extraLength = sep.length * (wordCount - 1) + end.length + numbers
       val wordList = words.getWords(wordCount, extraLength, min, 1)
       val wordString = wordList.mkString(sep)
+
       val randomGen = SecureRandom.getInstance("SHA1PRNG", "SUN")
+      val n = randomGen.nextDouble
+      val exponent = if (n > 0.1) numbers else numbers + 1
       val numberSeq =
-        String.format("%.0f", (randomGen.nextDouble * math.pow(10, numbers)))
+        String.format("%.0f", n * math.pow(10, exponent))
+
       val password = wordString.capitalize + end + numberSeq.toString
       Ok(views.html.pw(password.length, wordList.length, password))
     }
